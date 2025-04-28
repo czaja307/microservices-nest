@@ -19,24 +19,20 @@ export class CreatePaymentHandler implements ICommandHandler<CreatePaymentComman
 
   async execute(command: CreatePaymentCommand): Promise<Payment> {
     const payment = this.paymentRepository.create({
-      firstName: command.firstName,
-      lastName: command.lastName,
-      email: command.email,
-      phone: command.phone,
-      birthDate: command.birthDate,
-      address: command.address,
+      orderId: command.orderId,
+      paymentMethod: command.paymentMethod,
+      totalPrice: command.totalPrice,
+      paymentStatus: command.paymentStatus,
     });
 
     const savedPayment = await this.paymentRepository.save(payment);
 
     const event = new CreatePaymentEvent(
       savedPayment.id,
-      savedPayment.firstName,
-      savedPayment.lastName,
-      savedPayment.email,
-      savedPayment.phone,
-      savedPayment.birthDate,
-      savedPayment.address,
+      savedPayment.orderId,
+      savedPayment.paymentMethod,
+      savedPayment.totalPrice,
+      savedPayment.paymentStatus,
     );
 
     this.eventBus.publish(event);

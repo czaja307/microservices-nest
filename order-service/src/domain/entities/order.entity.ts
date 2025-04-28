@@ -20,12 +20,6 @@ export class Order {
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   totalPrice: number;
 
-  @Column({ type: 'varchar', length: 50 })
-  paymentStatus: string; // Example: "Paid", "Pending", "Failed"
-
-  @Column({ type: 'varchar', length: 50 })
-  orderStatus: string; // Example: "Processing", "Completed", "Cancelled"
-
   @CreateDateColumn()
   createdTime: Date;
 

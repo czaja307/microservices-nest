@@ -21,7 +21,7 @@ export class UpdateOrderHandler
   ) {}
 
   async execute(command: UpdateOrderCommand): Promise<Order> {
-    const { id, customerName, meals, totalPrice, paymentStatus, orderStatus } = command
+    const { id, customerName, meals, totalPrice} = command
     this.logger.log(`Attempting to update order with ID: ${id}`);
 
     const order = await this.orderRepository.findOne({ where: { id } });
@@ -30,23 +30,17 @@ export class UpdateOrderHandler
       throw new NotFoundException(`Order with ID ${id} not found`);
     }
 
-    order.firstName = firstName;
-    order.lastName = lastName;
-    order.email = email;
-    order.phone = phone;
-    order.birthDate = birthDate;
-    order.address = address;
+    order.customerName = customerName;
+    order.meals = meals;
+    order.totalPrice = totalPrice;
 
     const updatedOrder = await this.orderRepository.save(order);
 
     const event = new UpdateOrderEvent(
       updatedOrder.id,
-      updatedOrder.firstName,
-      updatedOrder.lastName,
-      updatedOrder.email,
-      updatedOrder.phone,
-      updatedOrder.birthDate,
-      updatedOrder.address,
+      updatedOrder.customerName,
+      updatedOrder.meals,
+      updatedOrder.totalPrice,
     );
 
     this.eventBus.publish(event);

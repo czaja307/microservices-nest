@@ -4,8 +4,6 @@ export class UpdateOrderEvent {
     public readonly customerName?: string,
     public readonly meals?: string[],
     public readonly totalPrice?: number,
-    public readonly paymentStatus?: string,
-    public readonly orderStatus?: string,
   ) {}
 
   toJSON(): string {
@@ -14,8 +12,6 @@ export class UpdateOrderEvent {
       customerName: this.customerName,
       meals: this.meals,
       totalPrice: this.totalPrice,
-      paymentStatus: this.paymentStatus,
-      orderStatus: this.orderStatus,
     });
   }
 }

@@ -2,15 +2,14 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
-// import { PaymentRepository } from './repositories/payment.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Payment } from '../domain/entities/payment.entity';
 import { PaymentModule } from '../web-api/payment.module';
 import { CreatePaymentHandler } from './handlers/create-payment.handler';
-import { DeletePaymentHandler } from './handlers/delete-payment.handler';
 import { GetAllPaymentsHandler } from './handlers/get-all-payments.handler';
 import { GetPaymentHandler } from './handlers/get-payment.handler';
-import { UpdatePaymentHandler } from './handlers/update-payment.handler';
+import { EventsController } from './controllers/events.controller';
+import { CreatePaymentEvent } from '../domain/events/create-payment.event';
 
 @Module({
   imports: [
@@ -40,7 +39,7 @@ import { UpdatePaymentHandler } from './handlers/update-payment.handler';
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: process.env.RABBITMQ_QUEUE || 'default_queue',
+          queue: CreatePaymentEvent.name,
           queueOptions: {
             durable: true,
           },
@@ -52,11 +51,11 @@ import { UpdatePaymentHandler } from './handlers/update-payment.handler';
   ],
   providers: [
     CreatePaymentHandler,
-    DeletePaymentHandler,
     GetAllPaymentsHandler,
     GetPaymentHandler,
-    UpdatePaymentHandler,
+    EventsController,
   ],
+  controllers: [EventsController],
   exports: [],
 })
 export class AppModule {}

@@ -6,8 +6,6 @@ export class CreateOrderCommand extends Command<Order> {
     public readonly customerName: string,
     public readonly meals: string[],
     public readonly totalPrice: number,
-    public readonly paymentStatus: string,
-    public readonly orderStatus: string,
   ) {
     super();
   }

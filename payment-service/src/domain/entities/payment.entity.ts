@@ -11,27 +11,21 @@ export class Payment {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  firstName: string;
+  @Column({ type: 'uuid' })
+  orderId: string; // Links the payment to an order
 
-  @Column({ type: 'varchar', length: 255 })
-  lastName: string;
+  @Column({ type: 'varchar', length: 50 })
+  paymentMethod: string; // Example: "Credit Card", "PayPal", "Bank Transfer"
 
-  @Column({ type: 'varchar', length: 255 })
-  email: string;
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  totalPrice: number; // Total amount paid
 
-  @Column({ type: 'varchar', length: 20 })
-  phone: string;
-
-  @Column({ type: 'date' })
-  birthDate: Date;
-
-  @Column({ type: 'varchar', length: 255 })
-  address: string;
+  @Column({ type: 'varchar', length: 50 })
+  paymentStatus: string; // Example: "Paid", "Pending", "Failed"
 
   @CreateDateColumn()
-  createdAt: Date;
+  createdTime: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedTime: Date;
 }

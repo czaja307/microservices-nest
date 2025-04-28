@@ -22,8 +22,6 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
       customerName: command.customerName,
       meals: command.meals,
       totalPrice: command.totalPrice,
-      paymentStatus: command.paymentStatus,
-      orderStatus: command.orderStatus,
     });
 
     const savedOrder = await this.orderRepository.save(order);
@@ -33,8 +31,6 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
       savedOrder.customerName,
       savedOrder.meals,
       savedOrder.totalPrice,
-      savedOrder.paymentStatus,
-      savedOrder.orderStatus,
     );
 
     this.eventBus.publish(event);

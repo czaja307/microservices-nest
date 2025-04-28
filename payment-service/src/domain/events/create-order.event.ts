@@ -4,7 +4,9 @@ export class CreateOrderEvent {
     public readonly customerName: string,
     public readonly meals: string[],
     public readonly totalPrice: number,
-  ) {}
+  ) {
+
+  }
 
   toJSON(): string {
     return JSON.stringify({
@@ -13,5 +15,15 @@ export class CreateOrderEvent {
       meals: this.meals,
       totalPrice: this.totalPrice,
     });
+  }
+
+  static fromJSON(json: string): CreateOrderEvent {
+    const data = JSON.parse(json);
+    return new CreateOrderEvent(
+      data.id,
+      data.customerName,
+      data.meals,
+      data.totalPrice,
+    );
   }
 }

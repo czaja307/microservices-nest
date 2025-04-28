@@ -10,6 +10,7 @@ import { DeleteOrderHandler } from './handlers/delete-order.handler';
 import { GetAllOrdersHandler } from './handlers/get-all-orders.handler';
 import { GetOrderHandler } from './handlers/get-order.handler';
 import { UpdateOrderHandler } from './handlers/update-order.handler';
+import { CreateOrderEvent } from '../domain/events/create-order.event';
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import { UpdateOrderHandler } from './handlers/update-order.handler';
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: process.env.RABBITMQ_QUEUE || 'default_queue',
+          queue: CreateOrderEvent.name,
           queueOptions: {
             durable: true,
           },

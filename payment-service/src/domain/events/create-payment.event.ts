@@ -1,36 +1,19 @@
 export class CreatePaymentEvent {
   constructor(
     public readonly id: string,
-    public readonly firstName: string,
-    public readonly lastName: string,
-    public readonly email: string,
-    public readonly phone: string,
-    public readonly birthDate: Date,
-    public readonly address: string,
+    public readonly orderId: string,
+    public readonly paymentMethod: string,
+    public readonly totalPrice: number,
+    public readonly paymentStatus: string,
   ) {}
-
-  static fromJSON(json: string): CreatePaymentEvent {
-    const data = JSON.parse(json);
-    return new CreatePaymentEvent(
-      data.id,
-      data.firstName,
-      data.lastName,
-      data.email,
-      data.phone,
-      new Date(data.birthDate),
-      data.address,
-    );
-  }
 
   toJSON(): string {
     return JSON.stringify({
       id: this.id,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      phone: this.phone,
-      birthDate: this.birthDate.toISOString(),
-      address: this.address,
+      orderId: this.orderId,
+      paymentMethod: this.paymentMethod,
+      totalPrice: this.totalPrice,
+      paymentStatus: this.paymentStatus,
     });
   }
 }

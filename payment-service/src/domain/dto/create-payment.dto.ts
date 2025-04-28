@@ -1,31 +1,23 @@
-import { IsString, IsEmail, IsDate, IsNotEmpty, Length } from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID, IsNumber, IsIn } from 'class-validator';
+import { PaymentMethodEnum } from '../enums/payment-method.enum';
+import { PaymentStatusEnum } from '../enums/payment-status.enum';
 
 export class CreatePaymentDto {
-  @IsString()
+  @IsUUID()
   @IsNotEmpty()
-  @Length(1, 255)
-  firstName: string;
+  orderId: string;
 
   @IsString()
   @IsNotEmpty()
-  @Length(1, 255)
-  lastName: string;
+  @IsIn(Object.values(PaymentMethodEnum))
+  paymentMethod: string;
 
-  @IsEmail()
+  @IsNumber()
   @IsNotEmpty()
-  email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(1, 20)
-  phone: string;
-
-  @IsDate()
-  @IsNotEmpty()
-  birthDate: Date;
+  totalPrice: number;
 
   @IsString()
   @IsNotEmpty()
-  @Length(1, 255)
-  address: string;
+  @IsIn(Object.values(PaymentStatusEnum))
+  paymentStatus: string;
 }

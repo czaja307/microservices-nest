@@ -30,12 +30,9 @@ export class OrderController {
   ): Promise<Order> {
     return this.commandBus.execute(
       new CreateOrderCommand(
-        createOrderDto.firstName,
-        createOrderDto.lastName,
-        createOrderDto.email,
-        createOrderDto.phone,
-        createOrderDto.birthDate,
-        createOrderDto.address,
+        createOrderDto.customerName,
+        createOrderDto.meals,
+        createOrderDto.totalPrice,
       ),
     );
   }
@@ -48,12 +45,9 @@ export class OrderController {
     return this.commandBus.execute(
       new UpdateOrderCommand(
         id,
-        updateOrderDto.firstName,
-        updateOrderDto.lastName,
-        updateOrderDto.email,
-        updateOrderDto.phone,
-        updateOrderDto.birthDate,
-        updateOrderDto.address,
+        updateOrderDto.customerName,
+        updateOrderDto.meals,
+        updateOrderDto.totalPrice,
       ),
     );
   }

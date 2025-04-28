@@ -1,6 +1,4 @@
-import { IsString, IsNotEmpty, IsArray, IsNumber, IsIn } from 'class-validator';
-import { PaymentStatusEnum } from '../enums/payment-status.enum';
-import { OrderStatusEnum } from '../enums/order-status.enum';
+import { IsString, IsNotEmpty, IsArray, IsNumber } from 'class-validator';
 
 export class CreateOrderDto {
   @IsString()
@@ -14,12 +12,4 @@ export class CreateOrderDto {
   @IsNumber()
   @IsNotEmpty()
   totalPrice: number;
-
-  @IsString()
-  @IsIn(Object.values(PaymentStatusEnum))
-  paymentStatus: string;
-
-  @IsString()
-  @IsIn(Object.values(OrderStatusEnum))
-  orderStatus: string;
 }
