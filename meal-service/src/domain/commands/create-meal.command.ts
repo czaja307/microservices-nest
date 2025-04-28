@@ -1,14 +1,13 @@
+// meal-service/src/domain/commands/create-meal.command.ts
 import { Command } from '@nestjs/cqrs';
 import { Meal } from '../entities/meal.entity';
 
 export class CreateMealCommand extends Command<Meal> {
   constructor(
-    public readonly firstName: string,
-    public readonly lastName: string,
-    public readonly email: string,
-    public readonly phone: string,
-    public readonly birthDate: Date,
-    public readonly address: string,
+    public readonly name: string,
+    public readonly description: string,
+    public readonly price: number,
+    public readonly preparationTimeMinutes: number,
   ) {
     super();
   }

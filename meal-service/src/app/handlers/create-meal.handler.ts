@@ -19,24 +19,20 @@ export class CreateMealHandler implements ICommandHandler<CreateMealCommand> {
 
   async execute(command: CreateMealCommand): Promise<Meal> {
     const meal = this.mealRepository.create({
-      firstName: command.firstName,
-      lastName: command.lastName,
-      email: command.email,
-      phone: command.phone,
-      birthDate: command.birthDate,
-      address: command.address,
+      name: command.name,
+      description: command.description,
+      price: command.price,
+      preparationTimeMinutes: command.preparationTimeMinutes,
     });
 
     const savedMeal = await this.mealRepository.save(meal);
 
     const event = new CreateMealEvent(
       savedMeal.id,
-      savedMeal.firstName,
-      savedMeal.lastName,
-      savedMeal.email,
-      savedMeal.phone,
-      savedMeal.birthDate,
-      savedMeal.address,
+      savedMeal.name,
+      savedMeal.description,
+      savedMeal.price,
+      savedMeal.preparationTimeMinutes,
     );
 
     this.eventBus.publish(event);

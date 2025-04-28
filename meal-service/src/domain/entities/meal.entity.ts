@@ -1,3 +1,4 @@
+// meal-service/src/domain/entities/meal.entity.ts
 import {
   Column,
   CreateDateColumn,
@@ -12,22 +13,16 @@ export class Meal {
   id: string;
 
   @Column({ type: 'varchar', length: 255 })
-  firstName: string;
+  name: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  lastName: string;
+  @Column({ type: 'text' })
+  description: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  email: string;
+  @Column({ type: 'decimal', precision: 10, scale: 2 })
+  price: number;
 
-  @Column({ type: 'varchar', length: 20 })
-  phone: string;
-
-  @Column({ type: 'date' })
-  birthDate: Date;
-
-  @Column({ type: 'varchar', length: 255 })
-  address: string;
+  @Column({ type: 'int', default: 0 })
+  preparationTimeMinutes: number;
 
   @CreateDateColumn()
   createdAt: Date;

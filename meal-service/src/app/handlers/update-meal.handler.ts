@@ -21,7 +21,7 @@ export class UpdateMealHandler
   ) {}
 
   async execute(command: UpdateMealCommand): Promise<Meal> {
-    const { id, firstName, lastName, email, phone, birthDate, address } =
+    const { id, name, description, price, preparationTimeMinutes } =
       command;
     this.logger.log(`Attempting to update meal with ID: ${id}`);
 
@@ -31,23 +31,20 @@ export class UpdateMealHandler
       throw new NotFoundException(`Meal with ID ${id} not found`);
     }
 
-    meal.firstName = firstName;
-    meal.lastName = lastName;
-    meal.email = email;
-    meal.phone = phone;
-    meal.birthDate = birthDate;
-    meal.address = address;
+    if (name !== undefined) meal.name = name;
+    if (description !== undefined) meal.description = description;
+    if (price !== undefined) meal.price = price;
+    if (preparationTimeMinutes !== undefined)
+      meal.preparationTimeMinutes = preparationTimeMinutes;
 
     const updatedMeal = await this.mealRepository.save(meal);
 
     const event = new UpdateMealEvent(
       updatedMeal.id,
-      updatedMeal.firstName,
-      updatedMeal.lastName,
-      updatedMeal.email,
-      updatedMeal.phone,
-      updatedMeal.birthDate,
-      updatedMeal.address,
+      updatedMeal.name,
+      updatedMeal.description,
+      updatedMeal.price,
+      updatedMeal.preparationTimeMinutes,
     );
 
     this.eventBus.publish(event);

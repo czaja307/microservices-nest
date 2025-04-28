@@ -30,12 +30,10 @@ export class MealController {
   ): Promise<Meal> {
     return this.commandBus.execute(
       new CreateMealCommand(
-        createMealDto.firstName,
-        createMealDto.lastName,
-        createMealDto.email,
-        createMealDto.phone,
-        createMealDto.birthDate,
-        createMealDto.address,
+        createMealDto.name,
+        createMealDto.description,
+        createMealDto.price,
+        createMealDto.preparationTimeMinutes,
       ),
     );
   }
@@ -48,12 +46,10 @@ export class MealController {
     return this.commandBus.execute(
       new UpdateMealCommand(
         id,
-        updateMealDto.firstName,
-        updateMealDto.lastName,
-        updateMealDto.email,
-        updateMealDto.phone,
-        updateMealDto.birthDate,
-        updateMealDto.address,
+        updateMealDto.name,
+        updateMealDto.description,
+        updateMealDto.price,
+        updateMealDto.preparationTimeMinutes,
       ),
     );
   }

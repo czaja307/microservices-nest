@@ -1,31 +1,18 @@
-import { IsString, IsEmail, IsDate, IsNotEmpty, Length } from 'class-validator';
+import { IsString, IsNumber, IsArray, IsBoolean, IsOptional, Min, Length } from 'class-validator';
 
 export class CreateMealDto {
   @IsString()
-  @IsNotEmpty()
   @Length(1, 255)
-  firstName: string;
+  name: string;
 
   @IsString()
-  @IsNotEmpty()
-  @Length(1, 255)
-  lastName: string;
+  description: string;
 
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+  @IsNumber()
+  @Min(0)
+  price: number;
 
-  @IsString()
-  @IsNotEmpty()
-  @Length(1, 20)
-  phone: string;
-
-  @IsDate()
-  @IsNotEmpty()
-  birthDate: Date;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(1, 255)
-  address: string;
+  @IsNumber()
+  @Min(1)
+  preparationTimeMinutes: number;
 }

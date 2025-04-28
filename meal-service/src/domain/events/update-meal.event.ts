@@ -1,36 +1,29 @@
 export class UpdateMealEvent {
   constructor(
     public readonly id: string,
-    public readonly firstName?: string,
-    public readonly lastName?: string,
-    public readonly email?: string,
-    public readonly phone?: string,
-    public readonly birthDate?: Date,
-    public readonly address?: string,
+    public readonly name: string,
+    public readonly description: string,
+    public readonly price: number,
+    public readonly preparationTimeMinutes: number,
   ) {}
 
-  static fromJSON(json: string): UpdateMealEvent {
-    const data = JSON.parse(json);
+  static fromJSON(json: any): UpdateMealEvent {
     return new UpdateMealEvent(
-      data.id,
-      data.firstName,
-      data.lastName,
-      data.email,
-      data.phone,
-      data.birthDate ? new Date(data.birthDate) : undefined,
-      data.address,
+      json.id,
+      json.name,
+      json.description,
+      json.price,
+      json.preparationTimeMinutes,
     );
   }
 
-  toJSON(): string {
-    return JSON.stringify({
+  toJSON(): any {
+    return {
       id: this.id,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      phone: this.phone,
-      birthDate: this.birthDate?.toISOString(),
-      address: this.address,
-    });
+      name: this.name,
+      description: this.description,
+      price: this.price,
+      preparationTimeMinutes: this.preparationTimeMinutes,
+    };
   }
 }
