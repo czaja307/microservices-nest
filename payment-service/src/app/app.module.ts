@@ -35,11 +35,11 @@ import { CreatePaymentEvent } from '../domain/events/create-payment.event';
     TypeOrmModule.forFeature([Payment]),
     ClientsModule.register([
       {
-        name: 'RABBITMQ_SERVICE',
+        name: 'ORDER_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: CreatePaymentEvent.name,
+          queue: "MealServiceQueue",
           queueOptions: {
             durable: true,
           },

@@ -10,7 +10,6 @@ import { DeleteOrderHandler } from './handlers/delete-order.handler';
 import { GetAllOrdersHandler } from './handlers/get-all-orders.handler';
 import { GetOrderHandler } from './handlers/get-order.handler';
 import { UpdateOrderHandler } from './handlers/update-order.handler';
-import { CreateOrderEvent } from '../domain/events/create-order.event';
 
 @Module({
   imports: [
@@ -36,11 +35,22 @@ import { CreateOrderEvent } from '../domain/events/create-order.event';
     TypeOrmModule.forFeature([Order]),
     ClientsModule.register([
       {
-        name: 'RABBITMQ_SERVICE',
+        name: 'PAYMENT_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: CreateOrderEvent.name,
+          queue: 'PaymentServiceQueue',
+          queueOptions: {
+            durable: true,
+          },
+        },
+      },
+      {
+        name: 'MEAL_SERVICE',
+        transport: Transport.RMQ,
+        options: {
+          urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
+          queue: 'MealServiceQueue',
           queueOptions: {
             durable: true,
           },
@@ -57,6 +67,7 @@ import { CreateOrderEvent } from '../domain/events/create-order.event';
     GetOrderHandler,
     UpdateOrderHandler,
   ],
+  controllers: [],
   exports: [],
 })
 export class AppModule {}

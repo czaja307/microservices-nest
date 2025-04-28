@@ -2,10 +2,12 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as process from 'node:process';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   // Create a hybrid application that supports both HTTP and microservices
   const app = await NestFactory.create(AppModule);
+  const rabbitMQUrl = process.env.RABBITMQ_URL || 'amqp://localhost:5672';
 
   // Enable validation
   app.useGlobalPipes(
@@ -18,6 +20,17 @@ async function bootstrap() {
       },
     }),
   );
+
+  app.connectMicroservice<MicroserviceOptions>({
+  transport: Transport.RMQ,
+  options: {
+    urls: [rabbitMQUrl],
+    queue: 'ReviewServiceQueue',
+    queueOptions: {
+      durable: true,
+    },
+  },
+});
 
   await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3000);

@@ -39,11 +39,11 @@ import { CreateOrderEvent } from '../domain/events/create-order.event';
     TypeOrmModule.forFeature([Meal, OrderPreparation]),
     ClientsModule.register([
       {
-        name: 'RABBITMQ_SERVICE',
+        name: 'DELIVERY_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: CreateOrderEvent.name,
+          queue: "DeliveryServiceQueue",
           queueOptions: {
             durable: true,
           },

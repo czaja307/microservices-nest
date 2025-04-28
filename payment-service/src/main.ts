@@ -30,7 +30,7 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: [rabbitMQUrl],
-      queue: CreateOrderEvent.name,
+      queue: "PaymentServiceQueue",
       queueOptions: {
         durable: true,
       },

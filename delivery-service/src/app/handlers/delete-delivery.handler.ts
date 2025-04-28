@@ -16,7 +16,7 @@ export class DeleteDeliveryHandler
   constructor(
     @InjectRepository(Delivery)
     private readonly deliveryRepository: Repository<Delivery>,
-    @Inject('RABBITMQ_SERVICE') private readonly client: ClientProxy,
+    @Inject('REVIEW_SERVICE') private readonly client: ClientProxy,
     private readonly eventBus: EventBus,
   ) {}
 

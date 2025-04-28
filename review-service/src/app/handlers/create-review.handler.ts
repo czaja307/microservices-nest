@@ -13,8 +13,6 @@ export class CreateReviewHandler implements ICommandHandler<CreateReviewCommand>
 
   constructor(
     @InjectRepository(Review) private readonly reviewRepository: Repository<Review>,
-    @Inject('RABBITMQ_SERVICE') private readonly client: ClientProxy,
-    private readonly eventBus: EventBus,
   ) {}
 
   async execute(command: CreateReviewCommand): Promise<Review> {
@@ -37,8 +35,6 @@ export class CreateReviewHandler implements ICommandHandler<CreateReviewCommand>
       savedReview.customerEmail,
     );
 
-    this.eventBus.publish(event);
-    this.client.emit(CreateReviewEvent.name, event.toJSON());
     this.logger.log(`Review created with ID: ${savedReview.id}`);
 
     return savedReview;

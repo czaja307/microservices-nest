@@ -16,7 +16,7 @@ export class DeleteOrderHandler
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
-    @Inject('RABBITMQ_SERVICE') private readonly client: ClientProxy,
+    @Inject('MEAL_SERVICE') private readonly client: ClientProxy,
     private readonly eventBus: EventBus,
   ) {}
 

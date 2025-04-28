@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { HttpModule } from '@nestjs/axios';
 import { Delivery } from '../domain/entities/delivery.entity';
 import { DeliveryModule } from '../web-api/delivery.module';
 import { CreateDeliveryHandler } from './handlers/create-delivery.handler';
@@ -35,17 +36,21 @@ import { EventsController } from './controllers/events.controller';
     TypeOrmModule.forFeature([Delivery]),
     ClientsModule.register([
       {
-        name: 'RABBITMQ_SERVICE',
+        name: 'REVIEW_SERVICE',
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: process.env.RABBITMQ_QUEUE || 'default_queue',
+          queue: "ReviewServiceQueue",
           queueOptions: {
             durable: true,
           },
         },
       },
     ]),
+    HttpModule.register({
+      timeout: 5000,
+      maxRedirects: 5,
+    }),
     CqrsModule,
     DeliveryModule,
   ],

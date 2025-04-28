@@ -5,9 +5,15 @@ import { CreateOrderEvent } from '../../domain/events/create-order.event';
 import { CreatePaymentEvent } from '../../domain/events/create-payment.event';
 import { CreateOrderPreparationCommand } from '../../domain/commands/create-order-preparation.command';
 
+interface OrderCache {
+  orderId: string;
+  mealIds: string[];
+}
+
 @Controller()
 export class EventsController {
   private readonly logger = new Logger(EventsController.name);
+  private readonly orderCache: Map<string, OrderCache> = new Map();
 
   constructor(private readonly commandBus: CommandBus) {}
 
@@ -16,18 +22,9 @@ export class EventsController {
     this.logger.log(`CreateOrderEvent received: ${data}`);
     const order = CreateOrderEvent.fromJSON(data);
 
-    // Extract meal IDs from order meals (assuming meal names are sent)
-    // In a real application, you would look up the meal IDs by name
-    // Mock meal IDs - in a real app these would come from a DB lookup
-    const mockMealIds = order.meals.map(name => `meal-${name.replace(/\s+/g, '-').toLowerCase()}`);
+    this.orderCache.set(order.id, { orderId: order.id, mealIds: [] });
 
-    this.logger.log(`Starting meal preparation for order: ${order.id}`);
-    await this.commandBus.execute(
-      new CreateOrderPreparationCommand(
-        order.id,
-        mockMealIds
-      ),
-    );
+    this.logger.log(`Order ${order.id} cached. Waiting for payment confirmation.`);
   }
 
   @EventPattern(CreatePaymentEvent.name)
@@ -35,9 +32,20 @@ export class EventsController {
     this.logger.log(`CreatePaymentEvent received: ${data}`);
     const payment = JSON.parse(data);
 
-    if (payment.paymentStatus === 'Paid') {
-      this.logger.log(`Payment confirmed for order ${payment.orderId}, proceeding with meal preparation`);
-      // In a real application, you might update the order status or take additional actions
+    if (payment.paymentStatus === 'Accepted') {
+      const cachedOrder = this.orderCache.get(payment.orderId);
+
+      if (cachedOrder) {
+        this.logger.log(`Payment confirmed for order ${payment.orderId}. Starting meal preparation.`);
+        await this.commandBus.execute(
+          new CreateOrderPreparationCommand(cachedOrder.orderId, cachedOrder.mealIds),
+        );
+        this.orderCache.delete(payment.orderId); // Remove from cache after processing
+      } else {
+        this.logger.warn(`No cached order found for payment ${payment.orderId}.`);
+      }
+    } else {
+      this.logger.log(`Payment for order ${payment.orderId} is not secured. Status: ${payment.paymentStatus}`);
     }
   }
 }

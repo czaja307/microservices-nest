@@ -13,7 +13,7 @@ export class CreateMealHandler implements ICommandHandler<CreateMealCommand> {
 
   constructor(
     @InjectRepository(Meal) private readonly mealRepository: Repository<Meal>,
-    @Inject('RABBITMQ_SERVICE') private readonly client: ClientProxy,
+    @Inject('DELIVERY_SERVICE') private readonly client: ClientProxy,
     private readonly eventBus: EventBus,
   ) {}
 

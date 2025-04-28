@@ -30,19 +30,7 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: [rabbitMQUrl],
-      queue: CreateOrderEvent.name,
-      queueOptions: {
-        durable: true,
-      },
-    },
-  });
-
-  // Connect to the Payment event queue
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: [rabbitMQUrl],
-      queue: CreatePaymentEvent.name,
+      queue: "MealServiceQueue",
       queueOptions: {
         durable: true,
       },

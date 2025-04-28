@@ -9,13 +9,14 @@ import { Repository } from 'typeorm';
 
 @CommandHandler(CreateOrderCommand)
 export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
-  private readonly logger = new Logger(CreateOrderHandler.name);
-
   constructor(
     @InjectRepository(Order) private readonly orderRepository: Repository<Order>,
-    @Inject('RABBITMQ_SERVICE') private readonly client: ClientProxy,
+    @Inject('PAYMENT_SERVICE') private readonly client: ClientProxy,
+    @Inject('MEAL_SERVICE') private readonly client2: ClientProxy,
     private readonly eventBus: EventBus,
   ) {}
+
+  private readonly logger = new Logger(CreateOrderHandler.name);
 
   async execute(command: CreateOrderCommand): Promise<Order> {
     const order = this.orderRepository.create({
@@ -33,8 +34,9 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
       savedOrder.totalPrice,
     );
 
-    this.eventBus.publish(event);
+
     this.client.emit(CreateOrderEvent.name, event.toJSON());
+    this.client2.emit(CreateOrderEvent.name, event.toJSON());
     this.logger.log(`Order created with ID: ${savedOrder.id}`);
 
     return savedOrder;

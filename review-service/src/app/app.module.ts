@@ -9,6 +9,7 @@ import { CreateReviewHandler } from './handlers/create-review.handler';
 import { DeleteReviewHandler } from './handlers/delete-review.handler';
 import { GetAllReviewsHandler } from './handlers/get-all-reviews.handler';
 import { GetReviewHandler } from './handlers/get-review.handler';
+import { EventsController } from './controllers/events.controller';
 
 @Module({
   imports: [
@@ -54,6 +55,7 @@ import { GetReviewHandler } from './handlers/get-review.handler';
     GetAllReviewsHandler,
     GetReviewHandler,
   ],
+  controllers: [EventsController],
   exports: [],
 })
 export class AppModule {}

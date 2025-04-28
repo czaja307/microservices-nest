@@ -13,7 +13,7 @@ export class CreatePaymentHandler implements ICommandHandler<CreatePaymentComman
 
   constructor(
     @InjectRepository(Payment) private readonly paymentRepository: Repository<Payment>,
-    @Inject('RABBITMQ_SERVICE') private readonly client: ClientProxy,
+    @Inject('ORDER_SERVICE') private readonly client: ClientProxy,
     private readonly eventBus: EventBus,
   ) {}
 

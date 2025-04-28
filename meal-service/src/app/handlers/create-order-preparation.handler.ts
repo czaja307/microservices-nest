@@ -15,7 +15,7 @@ export class CreateOrderPreparationHandler implements ICommandHandler<CreateOrde
   constructor(
     @InjectRepository(OrderPreparation) private readonly orderPreparationRepository: Repository<OrderPreparation>,
     @InjectRepository(Meal) private readonly mealRepository: Repository<Meal>,
-    @Inject('RABBITMQ_SERVICE') private readonly client: ClientProxy,
+    @Inject('DELIVERY_SERVICE') private readonly client: ClientProxy,
     private readonly eventBus: EventBus,
   ) {}
 
@@ -24,7 +24,7 @@ export class CreateOrderPreparationHandler implements ICommandHandler<CreateOrde
 
     // Calculate estimated preparation time based on meals
     const meals = await this.mealRepository.find({ where: { id: In(mealIds) } });
-const maxPrepTime = Math.max(...meals.map(meal => meal.preparationTimeMinutes), 0);
+    const maxPrepTime = Math.max(...meals.map(meal => meal.preparationTimeMinutes), 0);
 
     const orderPreparation = this.orderPreparationRepository.create({
       orderId,
@@ -42,17 +42,20 @@ const maxPrepTime = Math.max(...meals.map(meal => meal.preparationTimeMinutes), 
     );
 
     this.eventBus.publish(event);
+
+    // Using the event name directly as the pattern
     this.client.emit('OrderPreparationStatusEvent', event.toJSON());
+
     this.logger.log(`Order preparation started for order ID: ${savedOrderPreparation.orderId}`);
 
     // Simulate kitchen preparation process
     setTimeout(() => {
       this.updateOrderStatus(orderId, PreparationStatus.IN_PROGRESS);
-    }, 1000); // Start preparation after 10 seconds
-
-    setTimeout(() => {
+      setTimeout(() => {
       this.updateOrderStatus(orderId, PreparationStatus.READY);
-    }, maxPrepTime * 100); // Mark as ready after estimated preparation time
+      }, maxPrepTime * 100); // Mark as ready after estimated preparation time (scaled down for demo)
+    }, 1000); // Start preparation after 1 second
+
 
     return savedOrderPreparation;
   }
@@ -71,7 +74,10 @@ const maxPrepTime = Math.max(...meals.map(meal => meal.preparationTimeMinutes), 
     );
 
     this.eventBus.publish(event);
+
+    // Use 'OrderPreparationStatusEvent' as the event name
     this.client.emit('OrderPreparationStatusEvent', event.toJSON());
+
     this.logger.log(`Order ${orderId} status updated to: ${status}`);
   }
 }

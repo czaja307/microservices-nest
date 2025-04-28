@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as process from 'node:process';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   // Create a hybrid application that supports both HTTP and microservices
@@ -19,11 +20,25 @@ async function bootstrap() {
     }),
   );
 
+  const rabbitMQUrl = process.env.RABBITMQ_URL || 'amqp://localhost:5672';
+
+  // Connect to the meal service's OrderPreparationStatusEvent queue
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.RMQ,
+    options: {
+      urls: [rabbitMQUrl],
+      queue: 'DeliveryServiceQueue',
+      queueOptions: {
+        durable: true,
+      },
+    },
+  });
+
   await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3000);
 
-console.log(
-  `Application is running on: http://localhost:${process.env.PORT || 3000}/deliveries`,
-);
+  console.log(
+    `Delivery service is running on: http://localhost:${process.env.PORT || 3000}/deliveries`,
+  );
 }
 void bootstrap();

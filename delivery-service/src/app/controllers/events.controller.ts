@@ -8,13 +8,16 @@ interface OrderPreparationStatusEvent {
   orderId: string;
   status: string;
   estimatedCompletionMinutes: number;
+  updatedAt: Date;
 }
 
 @Controller()
 export class EventsController {
   private readonly logger = new Logger(EventsController.name);
 
-  constructor(private readonly commandBus: CommandBus) {}
+  constructor(
+    private readonly commandBus: CommandBus,
+  ) {}
 
   @EventPattern('OrderPreparationStatusEvent')
   async handleOrderPreparationStatus(@Payload() data: string) {
@@ -25,23 +28,25 @@ export class EventsController {
     if (event.status === 'Ready') {
       this.logger.log(`Order ${event.orderId} is ready for delivery`);
 
-      // Mock customer details (in a real app, these would come from the order service)
       const mockCustomerName = `Customer-${Math.floor(Math.random() * 1000)}`;
       const mockAddress = `${Math.floor(Math.random() * 1000)} Main St, City`;
       const mockPhone = `555-${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`;
 
-      // Create a delivery for this order
       await this.commandBus.execute(
         new CreateDeliveryCommand(
           event.orderId,
           mockAddress,
           mockPhone,
           mockCustomerName,
-          undefined, // Use default status
-          30, // Estimated delivery time in minutes
+          undefined,
+          event.estimatedCompletionMinutes || 30,
           'Created automatically when meal preparation was completed'
         ),
       );
+
+      this.logger.log(`Delivery created for order ${event.orderId}`);
+    } else {
+      this.logger.log(`Order ${event.orderId} status updated to ${event.status}, no action needed`);
     }
   }
 }
