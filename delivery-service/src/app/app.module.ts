@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
-// import { DeliveryRepository } from './repositories/delivery.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Delivery } from '../domain/entities/delivery.entity';
 import { DeliveryModule } from '../web-api/delivery.module';
@@ -10,7 +9,7 @@ import { CreateDeliveryHandler } from './handlers/create-delivery.handler';
 import { DeleteDeliveryHandler } from './handlers/delete-delivery.handler';
 import { GetAllDeliveriesHandler } from './handlers/get-all-deliveries.handler';
 import { GetDeliveryHandler } from './handlers/get-delivery.handler';
-import { UpdateDeliveryHandler } from './handlers/update-delivery.handler';
+import { EventsController } from './controllers/events.controller';
 
 @Module({
   imports: [
@@ -50,12 +49,12 @@ import { UpdateDeliveryHandler } from './handlers/update-delivery.handler';
     CqrsModule,
     DeliveryModule,
   ],
+  controllers: [EventsController],
   providers: [
     CreateDeliveryHandler,
     DeleteDeliveryHandler,
     GetAllDeliveriesHandler,
     GetDeliveryHandler,
-    UpdateDeliveryHandler,
   ],
   exports: [],
 })

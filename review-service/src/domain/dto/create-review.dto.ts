@@ -1,31 +1,26 @@
-import { IsString, IsEmail, IsDate, IsNotEmpty, Length } from 'class-validator';
+import { IsString, IsEmail, IsInt, IsNotEmpty, Length, IsUUID, Min, Max, IsOptional } from 'class-validator';
 
 export class CreateReviewDto {
+  @IsUUID()
+  @IsNotEmpty()
+  deliveryId: string;
+
+  @IsInt()
+  @Min(1)
+  @Max(5)
+  @IsNotEmpty()
+  rating: number;
+
   @IsString()
   @IsNotEmpty()
-  @Length(1, 255)
-  firstName: string;
+  comment: string;
 
   @IsString()
   @IsNotEmpty()
   @Length(1, 255)
-  lastName: string;
+  customerName: string;
 
   @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(1, 20)
-  phone: string;
-
-  @IsDate()
-  @IsNotEmpty()
-  birthDate: Date;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(1, 255)
-  address: string;
+  @IsOptional()
+  customerEmail?: string;
 }

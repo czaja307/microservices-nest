@@ -19,24 +19,22 @@ export class CreateReviewHandler implements ICommandHandler<CreateReviewCommand>
 
   async execute(command: CreateReviewCommand): Promise<Review> {
     const review = this.reviewRepository.create({
-      firstName: command.firstName,
-      lastName: command.lastName,
-      email: command.email,
-      phone: command.phone,
-      birthDate: command.birthDate,
-      address: command.address,
+      deliveryId: command.deliveryId,
+      rating: command.rating,
+      comment: command.comment,
+      customerName: command.customerName,
+      customerEmail: command.customerEmail,
     });
 
     const savedReview = await this.reviewRepository.save(review);
 
     const event = new CreateReviewEvent(
       savedReview.id,
-      savedReview.firstName,
-      savedReview.lastName,
-      savedReview.email,
-      savedReview.phone,
-      savedReview.birthDate,
-      savedReview.address,
+      savedReview.deliveryId,
+      savedReview.rating,
+      savedReview.comment,
+      savedReview.customerName,
+      savedReview.customerEmail,
     );
 
     this.eventBus.publish(event);

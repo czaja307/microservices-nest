@@ -1,36 +1,33 @@
 export class CreateReviewEvent {
   constructor(
     public readonly id: string,
-    public readonly firstName: string,
-    public readonly lastName: string,
-    public readonly email: string,
-    public readonly phone: string,
-    public readonly birthDate: Date,
-    public readonly address: string,
+    public readonly deliveryId: string,
+    public readonly rating: number,
+    public readonly comment: string,
+    public readonly customerName: string,
+    public readonly customerEmail?: string,
   ) {}
 
   static fromJSON(json: string): CreateReviewEvent {
     const data = JSON.parse(json);
     return new CreateReviewEvent(
       data.id,
-      data.firstName,
-      data.lastName,
-      data.email,
-      data.phone,
-      new Date(data.birthDate),
-      data.address,
+      data.deliveryId,
+      data.rating,
+      data.comment,
+      data.customerName,
+      data.customerEmail,
     );
   }
 
   toJSON(): string {
     return JSON.stringify({
       id: this.id,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      phone: this.phone,
-      birthDate: this.birthDate.toISOString(),
-      address: this.address,
+      deliveryId: this.deliveryId,
+      rating: this.rating,
+      comment: this.comment,
+      customerName: this.customerName,
+      customerEmail: this.customerEmail,
     });
   }
 }

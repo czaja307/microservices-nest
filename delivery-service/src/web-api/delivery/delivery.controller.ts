@@ -2,19 +2,17 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
   Body,
   Param,
+  Query,
 } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { CreateDeliveryCommand } from '../../domain/commands/create-delivery.command';
-import { UpdateDeliveryCommand } from '../../domain/commands/update-delivery.command';
 import { DeleteDeliveryCommand } from '../../domain/commands/delete-delivery.command';
 import { GetDeliveryQuery } from '../../app/handlers/get-delivery.handler';
 import { GetAllDeliveriesQuery } from '../../app/handlers/get-all-deliveries.handler';
 import { CreateDeliveryDto } from '../../domain/dto/create-delivery.dto';
-import { UpdateDeliveryDto } from '../../domain/dto/update-delivery.dto';
 import { Delivery } from '../../domain/entities/delivery.entity';
 
 @Controller('deliveries')
@@ -30,30 +28,13 @@ export class DeliveryController {
   ): Promise<Delivery> {
     return this.commandBus.execute(
       new CreateDeliveryCommand(
-        createDeliveryDto.firstName,
-        createDeliveryDto.lastName,
-        createDeliveryDto.email,
-        createDeliveryDto.phone,
-        createDeliveryDto.birthDate,
-        createDeliveryDto.address,
-      ),
-    );
-  }
-
-  @Put(':id')
-  async updateDelivery(
-    @Param('id') id: string,
-    @Body() updateDeliveryDto: UpdateDeliveryDto,
-  ): Promise<Delivery> {
-    return this.commandBus.execute(
-      new UpdateDeliveryCommand(
-        id,
-        updateDeliveryDto.firstName,
-        updateDeliveryDto.lastName,
-        updateDeliveryDto.email,
-        updateDeliveryDto.phone,
-        updateDeliveryDto.birthDate,
-        updateDeliveryDto.address,
+        createDeliveryDto.orderId,
+        createDeliveryDto.deliveryAddress,
+        createDeliveryDto.recipientPhone,
+        createDeliveryDto.recipientName,
+        createDeliveryDto.status,
+        createDeliveryDto.estimatedDeliveryMinutes,
+        createDeliveryDto.notes,
       ),
     );
   }
@@ -69,7 +50,9 @@ export class DeliveryController {
   }
 
   @Get()
-  async getAllDeliveries(): Promise<Delivery[]> {
-    return this.queryBus.execute(new GetAllDeliveriesQuery());
+  async getAllDeliveries(
+    @Query('orderId') orderId?: string
+  ): Promise<Delivery[]> {
+    return this.queryBus.execute(new GetAllDeliveriesQuery(orderId));
   }
 }

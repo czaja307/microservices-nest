@@ -3,7 +3,9 @@ import { Delivery } from '../../domain/entities/delivery.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-export class GetAllDeliveriesQuery {}
+export class GetAllDeliveriesQuery {
+  constructor(public readonly orderId?: string) {}
+}
 
 @QueryHandler(GetAllDeliveriesQuery)
 export class GetAllDeliveriesHandler
@@ -14,7 +16,12 @@ export class GetAllDeliveriesHandler
     private readonly deliveryRepository: Repository<Delivery>,
   ) {}
 
-  async execute(): Promise<Delivery[]> {
+  async execute(query: GetAllDeliveriesQuery): Promise<Delivery[]> {
+    if (query.orderId) {
+      return await this.deliveryRepository.find({
+        where: { orderId: query.orderId },
+      });
+    }
     return await this.deliveryRepository.find();
   }
 }

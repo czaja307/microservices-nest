@@ -2,7 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CqrsModule } from '@nestjs/cqrs';
-// import { ReviewRepository } from './repositories/review.repository';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Review } from '../domain/entities/review.entity';
 import { ReviewModule } from '../web-api/review.module';
@@ -10,7 +9,6 @@ import { CreateReviewHandler } from './handlers/create-review.handler';
 import { DeleteReviewHandler } from './handlers/delete-review.handler';
 import { GetAllReviewsHandler } from './handlers/get-all-reviews.handler';
 import { GetReviewHandler } from './handlers/get-review.handler';
-import { UpdateReviewHandler } from './handlers/update-review.handler';
 
 @Module({
   imports: [
@@ -55,7 +53,6 @@ import { UpdateReviewHandler } from './handlers/update-review.handler';
     DeleteReviewHandler,
     GetAllReviewsHandler,
     GetReviewHandler,
-    UpdateReviewHandler,
   ],
   exports: [],
 })

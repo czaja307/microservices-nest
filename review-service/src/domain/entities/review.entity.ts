@@ -11,23 +11,20 @@ export class Review {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  firstName: string;
+  @Column({ type: 'uuid' })
+  deliveryId: string;
+
+  @Column({ type: 'int' })
+  rating: number;
+
+  @Column({ type: 'text' })
+  comment: string;
 
   @Column({ type: 'varchar', length: 255 })
-  lastName: string;
+  customerName: string;
 
-  @Column({ type: 'varchar', length: 255 })
-  email: string;
-
-  @Column({ type: 'varchar', length: 20 })
-  phone: string;
-
-  @Column({ type: 'date' })
-  birthDate: Date;
-
-  @Column({ type: 'varchar', length: 255 })
-  address: string;
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  customerEmail: string;
 
   @CreateDateColumn()
   createdAt: Date;

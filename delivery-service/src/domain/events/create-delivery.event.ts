@@ -1,36 +1,43 @@
+// delivery-service/src/domain/events/create-delivery.event.ts
 export class CreateDeliveryEvent {
   constructor(
     public readonly id: string,
-    public readonly firstName: string,
-    public readonly lastName: string,
-    public readonly email: string,
-    public readonly phone: string,
-    public readonly birthDate: Date,
-    public readonly address: string,
+    public readonly orderId: string,
+    public readonly deliveryAddress: string,
+    public readonly recipientPhone: string,
+    public readonly recipientName: string,
+    public readonly status: string,
+    public readonly estimatedDeliveryMinutes: number,
+    public readonly notes?: string,
+    public readonly deliveryPersonId?: string,
   ) {}
 
   static fromJSON(json: string): CreateDeliveryEvent {
     const data = JSON.parse(json);
     return new CreateDeliveryEvent(
       data.id,
-      data.firstName,
-      data.lastName,
-      data.email,
-      data.phone,
-      new Date(data.birthDate),
-      data.address,
+      data.orderId,
+      data.deliveryAddress,
+      data.recipientPhone,
+      data.recipientName,
+      data.status,
+      data.estimatedDeliveryMinutes,
+      data.notes,
+      data.deliveryPersonId,
     );
   }
 
   toJSON(): string {
     return JSON.stringify({
       id: this.id,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      phone: this.phone,
-      birthDate: this.birthDate.toISOString(),
-      address: this.address,
+      orderId: this.orderId,
+      deliveryAddress: this.deliveryAddress,
+      recipientPhone: this.recipientPhone,
+      recipientName: this.recipientName,
+      status: this.status,
+      estimatedDeliveryMinutes: this.estimatedDeliveryMinutes,
+      notes: this.notes,
+      deliveryPersonId: this.deliveryPersonId,
     });
   }
 }
