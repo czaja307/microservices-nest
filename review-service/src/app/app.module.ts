@@ -10,6 +10,7 @@ import { DeleteReviewHandler } from './handlers/delete-review.handler';
 import { GetAllReviewsHandler } from './handlers/get-all-reviews.handler';
 import { GetReviewHandler } from './handlers/get-review.handler';
 import { EventsController } from './controllers/events.controller';
+import { HealthController } from '../web-api/health/health.controller';
 
 @Module({
   imports: [
@@ -55,7 +56,7 @@ import { EventsController } from './controllers/events.controller';
     GetAllReviewsHandler,
     GetReviewHandler,
   ],
-  controllers: [EventsController],
+  controllers: [EventsController, HealthController],
   exports: [],
 })
 export class AppModule {}

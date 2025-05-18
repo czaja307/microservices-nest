@@ -9,7 +9,6 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const rabbitMQUrl = process.env.RABBITMQ_URL || 'amqp://localhost:5672';
 
-
   // Enable validation
   app.useGlobalPipes(
     new ValidationPipe({
@@ -23,21 +22,21 @@ async function bootstrap() {
   );
 
   app.connectMicroservice<MicroserviceOptions>({
-  transport: Transport.RMQ,
-  options: {
-    urls: [rabbitMQUrl],
-    queue: "OrderServiceQueue",
-    queueOptions: {
-      durable: true,
+    transport: Transport.RMQ,
+    options: {
+      urls: [rabbitMQUrl],
+      queue: 'OrderServiceQueue',
+      queueOptions: {
+        durable: true,
+      },
     },
-  },
-});
+  });
 
   await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3000);
 
-console.log(
-  `Application is running on: http://localhost:${process.env.PORT || 3000}/orders`,
-);
+  console.log(
+    `Application is running on: http://localhost:${process.env.PORT || 3000}/orders`,
+  );
 }
 void bootstrap();

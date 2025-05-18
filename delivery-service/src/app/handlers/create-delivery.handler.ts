@@ -1,18 +1,24 @@
 import { CommandHandler, ICommandHandler, EventBus } from '@nestjs/cqrs';
 import { CreateDeliveryCommand } from '../../domain/commands/create-delivery.command';
 import { Inject, Logger } from '@nestjs/common';
-import { Delivery, DeliveryStatus } from '../../domain/entities/delivery.entity';
+import {
+  Delivery,
+  DeliveryStatus,
+} from '../../domain/entities/delivery.entity';
 import { ClientProxy } from '@nestjs/microservices';
 import { CreateDeliveryEvent } from '../../domain/events/create-delivery.event';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @CommandHandler(CreateDeliveryCommand)
-export class CreateDeliveryHandler implements ICommandHandler<CreateDeliveryCommand> {
+export class CreateDeliveryHandler
+  implements ICommandHandler<CreateDeliveryCommand>
+{
   private readonly logger = new Logger(CreateDeliveryHandler.name);
 
   constructor(
-    @InjectRepository(Delivery) private readonly deliveryRepository: Repository<Delivery>,
+    @InjectRepository(Delivery)
+    private readonly deliveryRepository: Repository<Delivery>,
     @Inject('REVIEW_SERVICE') private readonly client: ClientProxy,
     private readonly eventBus: EventBus,
   ) {}
@@ -41,7 +47,9 @@ export class CreateDeliveryHandler implements ICommandHandler<CreateDeliveryComm
       savedDelivery.notes,
     );
 
-    this.logger.log(`Delivery created with ID: ${savedDelivery.id} for order: ${savedDelivery.orderId}`);
+    this.logger.log(
+      `Delivery created with ID: ${savedDelivery.id} for order: ${savedDelivery.orderId}`,
+    );
 
     // Mock delivery process
     await this.mockDeliveryProcess(savedDelivery.id);
@@ -52,16 +60,17 @@ export class CreateDeliveryHandler implements ICommandHandler<CreateDeliveryComm
     return savedDelivery;
   }
 
-private async mockDeliveryProcess(deliveryId: string): Promise<void> {
-  // Simulate delivery after estimatedDeliveryMinutes or default to 15 seconds for demonstration
-  setTimeout(async () => {
-    const delivery = await this.deliveryRepository.findOne({ where: { id: deliveryId } });
-    if (!delivery) return;
+  private async mockDeliveryProcess(deliveryId: string): Promise<void> {
+    // Simulate delivery after estimatedDeliveryMinutes or default to 15 seconds for demonstration
+    setTimeout(async () => {
+      const delivery = await this.deliveryRepository.findOne({
+        where: { id: deliveryId },
+      });
+      if (!delivery) return;
 
-    delivery.status = DeliveryStatus.DELIVERED;
-    await this.deliveryRepository.save(delivery);
-    this.logger.log(`Delivery ${deliveryId} has been delivered`);
-
-  }, 15000);
-}
+      delivery.status = DeliveryStatus.DELIVERED;
+      await this.deliveryRepository.save(delivery);
+      this.logger.log(`Delivery ${deliveryId} has been delivered`);
+    }, 15000);
+  }
 }

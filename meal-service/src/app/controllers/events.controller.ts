@@ -24,7 +24,9 @@ export class EventsController {
 
     this.orderCache.set(order.id, { orderId: order.id, mealIds: [] });
 
-    this.logger.log(`Order ${order.id} cached. Waiting for payment confirmation.`);
+    this.logger.log(
+      `Order ${order.id} cached. Waiting for payment confirmation.`,
+    );
   }
 
   @EventPattern(CreatePaymentEvent.name)
@@ -36,16 +38,25 @@ export class EventsController {
       const cachedOrder = this.orderCache.get(payment.orderId);
 
       if (cachedOrder) {
-        this.logger.log(`Payment confirmed for order ${payment.orderId}. Starting meal preparation.`);
+        this.logger.log(
+          `Payment confirmed for order ${payment.orderId}. Starting meal preparation.`,
+        );
         await this.commandBus.execute(
-          new CreateOrderPreparationCommand(cachedOrder.orderId, cachedOrder.mealIds),
+          new CreateOrderPreparationCommand(
+            cachedOrder.orderId,
+            cachedOrder.mealIds,
+          ),
         );
         this.orderCache.delete(payment.orderId); // Remove from cache after processing
       } else {
-        this.logger.warn(`No cached order found for payment ${payment.orderId}.`);
+        this.logger.warn(
+          `No cached order found for payment ${payment.orderId}.`,
+        );
       }
     } else {
-      this.logger.log(`Payment for order ${payment.orderId} is not secured. Status: ${payment.paymentStatus}`);
+      this.logger.log(
+        `Payment for order ${payment.orderId} is not secured. Status: ${payment.paymentStatus}`,
+      );
     }
   }
 }

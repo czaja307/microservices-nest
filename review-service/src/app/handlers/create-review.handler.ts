@@ -8,11 +8,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @CommandHandler(CreateReviewCommand)
-export class CreateReviewHandler implements ICommandHandler<CreateReviewCommand> {
+export class CreateReviewHandler
+  implements ICommandHandler<CreateReviewCommand>
+{
   private readonly logger = new Logger(CreateReviewHandler.name);
 
   constructor(
-    @InjectRepository(Review) private readonly reviewRepository: Repository<Review>,
+    @InjectRepository(Review)
+    private readonly reviewRepository: Repository<Review>,
   ) {}
 
   async execute(command: CreateReviewCommand): Promise<Review> {

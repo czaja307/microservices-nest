@@ -15,9 +15,7 @@ interface OrderPreparationStatusEvent {
 export class EventsController {
   private readonly logger = new Logger(EventsController.name);
 
-  constructor(
-    private readonly commandBus: CommandBus,
-  ) {}
+  constructor(private readonly commandBus: CommandBus) {}
 
   @EventPattern('OrderPreparationStatusEvent')
   async handleOrderPreparationStatus(@Payload() data: string) {
@@ -30,7 +28,9 @@ export class EventsController {
 
       const mockCustomerName = `Customer-${Math.floor(Math.random() * 1000)}`;
       const mockAddress = `${Math.floor(Math.random() * 1000)} Main St, City`;
-      const mockPhone = `555-${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`;
+      const mockPhone = `555-${Math.floor(Math.random() * 10000)
+        .toString()
+        .padStart(4, '0')}`;
 
       await this.commandBus.execute(
         new CreateDeliveryCommand(
@@ -40,13 +40,15 @@ export class EventsController {
           mockCustomerName,
           undefined,
           event.estimatedCompletionMinutes || 30,
-          'Created automatically when meal preparation was completed'
+          'Created automatically when meal preparation was completed',
         ),
       );
 
       this.logger.log(`Delivery created for order ${event.orderId}`);
     } else {
-      this.logger.log(`Order ${event.orderId} status updated to ${event.status}, no action needed`);
+      this.logger.log(
+        `Order ${event.orderId} status updated to ${event.status}, no action needed`,
+      );
     }
   }
 }

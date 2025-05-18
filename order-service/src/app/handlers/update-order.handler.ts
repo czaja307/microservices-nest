@@ -8,9 +8,7 @@ import { UpdateOrderEvent } from '../../domain/events/update-order.event';
 import { ClientProxy } from '@nestjs/microservices';
 
 @CommandHandler(UpdateOrderCommand)
-export class UpdateOrderHandler
-  implements ICommandHandler<UpdateOrderCommand>
-{
+export class UpdateOrderHandler implements ICommandHandler<UpdateOrderCommand> {
   private readonly logger = new Logger(UpdateOrderHandler.name);
 
   constructor(
@@ -21,7 +19,7 @@ export class UpdateOrderHandler
   ) {}
 
   async execute(command: UpdateOrderCommand): Promise<Order> {
-    const { id, customerName, meals, totalPrice} = command
+    const { id, customerName, meals, totalPrice } = command;
     this.logger.log(`Attempting to update order with ID: ${id}`);
 
     const order = await this.orderRepository.findOne({ where: { id } });
@@ -45,7 +43,9 @@ export class UpdateOrderHandler
 
     this.eventBus.publish(event);
     this.client.emit(UpdateOrderEvent.name, event.toJSON());
-    this.logger.log(`Order with ID ${id} updated successfully and event emitted.`);
+    this.logger.log(
+      `Order with ID ${id} updated successfully and event emitted.`,
+    );
     return updatedOrder;
   }
 }

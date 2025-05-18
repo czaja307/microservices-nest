@@ -25,9 +25,7 @@ export class MealController {
   ) {}
 
   @Post()
-  async createMeal(
-    @Body() createMealDto: CreateMealDto,
-  ): Promise<Meal> {
+  async createMeal(@Body() createMealDto: CreateMealDto): Promise<Meal> {
     return this.commandBus.execute(
       new CreateMealCommand(
         createMealDto.name,

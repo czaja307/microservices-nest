@@ -11,6 +11,7 @@ import { DeleteDeliveryHandler } from './handlers/delete-delivery.handler';
 import { GetAllDeliveriesHandler } from './handlers/get-all-deliveries.handler';
 import { GetDeliveryHandler } from './handlers/get-delivery.handler';
 import { EventsController } from './controllers/events.controller';
+import { HealthController } from '../web-api/health/health.controller';
 
 @Module({
   imports: [
@@ -40,7 +41,7 @@ import { EventsController } from './controllers/events.controller';
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: "ReviewServiceQueue",
+          queue: 'ReviewServiceQueue',
           queueOptions: {
             durable: true,
           },
@@ -54,7 +55,7 @@ import { EventsController } from './controllers/events.controller';
     CqrsModule,
     DeliveryModule,
   ],
-  controllers: [EventsController],
+  controllers: [EventsController, HealthController],
   providers: [
     CreateDeliveryHandler,
     DeleteDeliveryHandler,

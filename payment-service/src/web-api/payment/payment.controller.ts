@@ -1,8 +1,4 @@
-import {
-  Controller,
-  Get,
-  Param,
-} from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { GetPaymentQuery } from '../../app/handlers/get-payment.handler';
 import { GetAllPaymentsQuery } from '../../app/handlers/get-all-payments.handler';

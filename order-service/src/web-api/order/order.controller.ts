@@ -25,9 +25,7 @@ export class OrderController {
   ) {}
 
   @Post()
-  async createOrder(
-    @Body() createOrderDto: CreateOrderDto,
-  ): Promise<Order> {
+  async createOrder(@Body() createOrderDto: CreateOrderDto): Promise<Order> {
     return this.commandBus.execute(
       new CreateOrderCommand(
         createOrderDto.customerName,

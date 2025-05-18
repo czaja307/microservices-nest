@@ -4,9 +4,7 @@ export class CreateOrderEvent {
     public readonly customerName: string,
     public readonly meals: string[],
     public readonly totalPrice: number,
-  ) {
-
-  }
+  ) {}
 
   toJSON(): string {
     return JSON.stringify({

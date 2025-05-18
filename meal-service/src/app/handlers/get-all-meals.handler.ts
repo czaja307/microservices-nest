@@ -6,9 +6,7 @@ import { Repository } from 'typeorm';
 export class GetAllMealsQuery {}
 
 @QueryHandler(GetAllMealsQuery)
-export class GetAllMealsHandler
-  implements IQueryHandler<GetAllMealsQuery>
-{
+export class GetAllMealsHandler implements IQueryHandler<GetAllMealsQuery> {
   constructor(
     @InjectRepository(Meal)
     private readonly mealRepository: Repository<Meal>,

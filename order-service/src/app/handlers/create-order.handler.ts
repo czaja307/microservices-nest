@@ -10,7 +10,8 @@ import { Repository } from 'typeorm';
 @CommandHandler(CreateOrderCommand)
 export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
   constructor(
-    @InjectRepository(Order) private readonly orderRepository: Repository<Order>,
+    @InjectRepository(Order)
+    private readonly orderRepository: Repository<Order>,
     @Inject('PAYMENT_SERVICE') private readonly client: ClientProxy,
     @Inject('MEAL_SERVICE') private readonly client2: ClientProxy,
     private readonly eventBus: EventBus,
@@ -33,7 +34,6 @@ export class CreateOrderHandler implements ICommandHandler<CreateOrderCommand> {
       savedOrder.meals,
       savedOrder.totalPrice,
     );
-
 
     this.client.emit(CreateOrderEvent.name, event.toJSON());
     this.client2.emit(CreateOrderEvent.name, event.toJSON());

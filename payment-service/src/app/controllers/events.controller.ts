@@ -18,8 +18,10 @@ export class EventsController {
 
     this.logger.log(`Generating payment for order: ${payment.id}`);
 
-
-    const paymentMethod = Object.values(PaymentMethodEnum)[Math.floor(Math.random() * Object.values(PaymentMethodEnum).length)];
+    const paymentMethod =
+      Object.values(PaymentMethodEnum)[
+        Math.floor(Math.random() * Object.values(PaymentMethodEnum).length)
+      ];
     await this.commandBus.execute(
       new CreatePaymentCommand(
         payment.id,

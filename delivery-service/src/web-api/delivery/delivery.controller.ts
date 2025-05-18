@@ -51,7 +51,7 @@ export class DeliveryController {
 
   @Get()
   async getAllDeliveries(
-    @Query('orderId') orderId?: string
+    @Query('orderId') orderId?: string,
   ): Promise<Delivery[]> {
     return this.queryBus.execute(new GetAllDeliveriesQuery(orderId));
   }

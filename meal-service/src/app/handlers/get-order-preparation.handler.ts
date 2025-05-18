@@ -6,7 +6,9 @@ import { OrderPreparation } from '../../domain/entities/order-preparation.entity
 import { GetOrderPreparationQuery } from '../../web-api/meal/order-preparation.controller';
 
 @QueryHandler(GetOrderPreparationQuery)
-export class GetOrderPreparationHandler implements IQueryHandler<GetOrderPreparationQuery> {
+export class GetOrderPreparationHandler
+  implements IQueryHandler<GetOrderPreparationQuery>
+{
   constructor(
     @InjectRepository(OrderPreparation)
     private readonly orderPreparationRepository: Repository<OrderPreparation>,
@@ -19,7 +21,9 @@ export class GetOrderPreparationHandler implements IQueryHandler<GetOrderPrepara
     });
 
     if (!orderPreparation) {
-      throw new NotFoundException(`Order preparation with ID ${orderId} not found`);
+      throw new NotFoundException(
+        `Order preparation with ID ${orderId} not found`,
+      );
     }
 
     return orderPreparation;

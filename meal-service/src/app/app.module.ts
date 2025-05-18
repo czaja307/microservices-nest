@@ -14,6 +14,7 @@ import { UpdateMealHandler } from './handlers/update-meal.handler';
 import { CreateOrderPreparationHandler } from './handlers/create-order-preparation.handler';
 import { EventsController } from './controllers/events.controller';
 import { CreateOrderEvent } from '../domain/events/create-order.event';
+import { HealthController } from '../web-api/health/health.controller';
 
 @Module({
   imports: [
@@ -43,7 +44,7 @@ import { CreateOrderEvent } from '../domain/events/create-order.event';
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: "DeliveryServiceQueue",
+          queue: 'DeliveryServiceQueue',
           queueOptions: {
             durable: true,
           },
@@ -62,7 +63,7 @@ import { CreateOrderEvent } from '../domain/events/create-order.event';
     CreateOrderPreparationHandler,
     EventsController,
   ],
-  controllers: [EventsController],
+  controllers: [EventsController, HealthController],
   exports: [],
 })
 export class AppModule {}

@@ -30,19 +30,18 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: [rabbitMQUrl],
-      queue: "PaymentServiceQueue",
+      queue: 'PaymentServiceQueue',
       queueOptions: {
         durable: true,
       },
     },
-  })
-
+  });
 
   await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3000);
 
-console.log(
-  `Application is running on: http://localhost:${process.env.PORT || 3000}/payments`,
-);
+  console.log(
+    `Application is running on: http://localhost:${process.env.PORT || 3000}/payments`,
+  );
 }
 void bootstrap();

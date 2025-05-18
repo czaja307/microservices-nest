@@ -8,9 +8,7 @@ import { DeleteMealEvent } from '../../domain/events/delete-meal.event';
 import { ClientProxy } from '@nestjs/microservices';
 
 @CommandHandler(DeleteMealCommand)
-export class DeleteMealHandler
-  implements ICommandHandler<DeleteMealCommand>
-{
+export class DeleteMealHandler implements ICommandHandler<DeleteMealCommand> {
   private readonly logger = new Logger(DeleteMealHandler.name);
 
   constructor(
@@ -35,6 +33,8 @@ export class DeleteMealHandler
     const event = new DeleteMealEvent(id);
     this.eventBus.publish(event);
     this.client.emit(DeleteMealEvent.name, event.toJSON());
-    this.logger.log(`Meal with ID ${id} deleted successfully and event emitted.`);
+    this.logger.log(
+      `Meal with ID ${id} deleted successfully and event emitted.`,
+    );
   }
 }

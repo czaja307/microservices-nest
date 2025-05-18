@@ -48,7 +48,9 @@ export class ReviewController {
   }
 
   @Get()
-  async getAllReviews(@Query('deliveryId') deliveryId?: string): Promise<Review[]> {
+  async getAllReviews(
+    @Query('deliveryId') deliveryId?: string,
+  ): Promise<Review[]> {
     if (deliveryId) {
       return this.queryBus.execute(new GetReviewQuery(deliveryId));
     }

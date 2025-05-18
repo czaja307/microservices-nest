@@ -1,8 +1,8 @@
-version: '3.8'
+version: "3.8"
 
 services:
   order-service:
-    build: 
+    build:
       context: ./order-service
       dockerfile: Dockerfile
     container_name: order-service

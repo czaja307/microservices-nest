@@ -10,6 +10,7 @@ import { DeleteOrderHandler } from './handlers/delete-order.handler';
 import { GetAllOrdersHandler } from './handlers/get-all-orders.handler';
 import { GetOrderHandler } from './handlers/get-order.handler';
 import { UpdateOrderHandler } from './handlers/update-order.handler';
+import { HealthController } from '../web-api/health/health.controller';
 
 @Module({
   imports: [
@@ -67,7 +68,7 @@ import { UpdateOrderHandler } from './handlers/update-order.handler';
     GetOrderHandler,
     UpdateOrderHandler,
   ],
-  controllers: [],
+  controllers: [HealthController],
   exports: [],
 })
 export class AppModule {}

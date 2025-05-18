@@ -8,11 +8,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 @CommandHandler(CreatePaymentCommand)
-export class CreatePaymentHandler implements ICommandHandler<CreatePaymentCommand> {
+export class CreatePaymentHandler
+  implements ICommandHandler<CreatePaymentCommand>
+{
   private readonly logger = new Logger(CreatePaymentHandler.name);
 
   constructor(
-    @InjectRepository(Payment) private readonly paymentRepository: Repository<Payment>,
+    @InjectRepository(Payment)
+    private readonly paymentRepository: Repository<Payment>,
     @Inject('ORDER_SERVICE') private readonly client: ClientProxy,
     private readonly eventBus: EventBus,
   ) {}

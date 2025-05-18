@@ -10,6 +10,7 @@ import { GetAllPaymentsHandler } from './handlers/get-all-payments.handler';
 import { GetPaymentHandler } from './handlers/get-payment.handler';
 import { EventsController } from './controllers/events.controller';
 import { CreatePaymentEvent } from '../domain/events/create-payment.event';
+import { HealthController } from '../web-api/health/health.controller';
 
 @Module({
   imports: [
@@ -39,7 +40,7 @@ import { CreatePaymentEvent } from '../domain/events/create-payment.event';
         transport: Transport.RMQ,
         options: {
           urls: [process.env.RABBITMQ_URL || 'amqp://localhost:5672'],
-          queue: "MealServiceQueue",
+          queue: 'MealServiceQueue',
           queueOptions: {
             durable: true,
           },
@@ -55,7 +56,7 @@ import { CreatePaymentEvent } from '../domain/events/create-payment.event';
     GetPaymentHandler,
     EventsController,
   ],
-  controllers: [EventsController],
+  controllers: [EventsController, HealthController],
   exports: [],
 })
 export class AppModule {}

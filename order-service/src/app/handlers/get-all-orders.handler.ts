@@ -6,9 +6,7 @@ import { Repository } from 'typeorm';
 export class GetAllOrdersQuery {}
 
 @QueryHandler(GetAllOrdersQuery)
-export class GetAllOrdersHandler
-  implements IQueryHandler<GetAllOrdersQuery>
-{
+export class GetAllOrdersHandler implements IQueryHandler<GetAllOrdersQuery> {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,

@@ -35,6 +35,8 @@ export class DeleteReviewHandler
     const event = new DeleteReviewEvent(id);
     this.eventBus.publish(event);
     this.client.emit(DeleteReviewEvent.name, event.toJSON());
-    this.logger.log(`Review with ID ${id} deleted successfully and event emitted.`);
+    this.logger.log(
+      `Review with ID ${id} deleted successfully and event emitted.`,
+    );
   }
 }

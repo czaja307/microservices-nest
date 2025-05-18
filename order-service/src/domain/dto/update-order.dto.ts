@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsArray, IsNumber} from 'class-validator';
+import { IsString, IsNotEmpty, IsArray, IsNumber } from 'class-validator';
 
 export class UpdateOrderDto {
   @IsString()

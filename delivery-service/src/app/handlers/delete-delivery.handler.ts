@@ -35,6 +35,8 @@ export class DeleteDeliveryHandler
     const event = new DeleteDeliveryEvent(id);
     this.eventBus.publish(event);
     this.client.emit(DeleteDeliveryEvent.name, event.toJSON());
-    this.logger.log(`Delivery with ID ${id} deleted successfully and event emitted.`);
+    this.logger.log(
+      `Delivery with ID ${id} deleted successfully and event emitted.`,
+    );
   }
 }

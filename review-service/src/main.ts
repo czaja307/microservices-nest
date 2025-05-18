@@ -22,21 +22,21 @@ async function bootstrap() {
   );
 
   app.connectMicroservice<MicroserviceOptions>({
-  transport: Transport.RMQ,
-  options: {
-    urls: [rabbitMQUrl],
-    queue: 'ReviewServiceQueue',
-    queueOptions: {
-      durable: true,
+    transport: Transport.RMQ,
+    options: {
+      urls: [rabbitMQUrl],
+      queue: 'ReviewServiceQueue',
+      queueOptions: {
+        durable: true,
+      },
     },
-  },
-});
+  });
 
   await app.startAllMicroservices();
   await app.listen(process.env.PORT || 3000);
 
-console.log(
-  `Application is running on: http://localhost:${process.env.PORT || 3000}/reviews`,
-);
+  console.log(
+    `Application is running on: http://localhost:${process.env.PORT || 3000}/reviews`,
+  );
 }
 void bootstrap();
