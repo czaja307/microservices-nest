@@ -1,42 +1,35 @@
-version: "3.8"
-
 services:
   order-service:
-    build:
-      context: ./order-service
-      dockerfile: Dockerfile
-    container_name: order-service
+    image: czaja307/order-service:latest
     ports:
-      - "3000:3000"
+      - "3000"
+    deploy:
+      replicas: 2
 
   payment-service:
-    build:
-      context: ./payment-service
-      dockerfile: Dockerfile
-    container_name: payment-service
+    image: czaja307/payment-service:latest
     ports:
-      - "3001:3000"
+      - "3000"
+    deploy:
+      replicas: 1
 
   meal-service:
-    build:
-      context: ./meal-service
-      dockerfile: Dockerfile
-    container_name: meal-service
+    image: czaja307/meal-service:latest
     ports:
-      - "3002:3000"
+      - "3000"
+    deploy:
+      replicas: 3
 
   delivery-service:
-    build:
-      context: ./delivery-service
-      dockerfile: Dockerfile
-    container_name: delivery-service
+    image: czaja307/delivery-service:latest
     ports:
-      - "3003:3000"
+      - "3000"
+    deploy:
+      replicas: 1
 
   review-service:
-    build:
-      context: ./review-service
-      dockerfile: Dockerfile
-    container_name: review-service
+    image: czaja307/review-service:latest
     ports:
-      - "3004:3000"
+      - "3000"
+    deploy:
+      replicas: 2
