@@ -1,7 +1,1 @@
-{
-  "delivery-service": "628874541924.dkr.ecr.us-east-1.amazonaws.com/delivery-service",
-  "meal-service": "628874541924.dkr.ecr.us-east-1.amazonaws.com/meal-service",
-  "order-service": "628874541924.dkr.ecr.us-east-1.amazonaws.com/order-service",
-  "payment-service": "628874541924.dkr.ecr.us-east-1.amazonaws.com/payment-service",
-  "review-service": "628874541924.dkr.ecr.us-east-1.amazonaws.com/review-service"
-}
+{"delivery-service":"628874541924.dkr.ecr.us-east-1.amazonaws.com/delivery-service","meal-service":"628874541924.dkr.ecr.us-east-1.amazonaws.com/meal-service","order-service":"628874541924.dkr.ecr.us-east-1.amazonaws.com/order-service","payment-service":"628874541924.dkr.ecr.us-east-1.amazonaws.com/payment-service","review-service":"628874541924.dkr.ecr.us-east-1.amazonaws.com/review-service"}

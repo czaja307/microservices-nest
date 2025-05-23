@@ -56,17 +56,41 @@ resource "aws_route_table_association" "public" {
 // Security Groups
 resource "aws_security_group" "ecs_tasks" {
   name        = "${var.project_name}-ecs-tasks-sg"
-  description = "Allow inbound traffic for ECS tasks"
+  description = "Allow specific inbound traffic for ECS tasks"
   vpc_id      = aws_vpc.main.id
 
+  // Allow inbound traffic for all container ports (dynamic based on services)
+  dynamic "ingress" {
+    for_each = var.services
+    content {
+      description     = "Allow traffic to ${ingress.key} container port"
+      from_port       = ingress.value.container_port
+      to_port         = ingress.value.container_port
+      protocol        = "tcp"
+      security_groups = [aws_security_group.alb.id]
+    }
+  }
+
+  // Standard HTTP/HTTPS ports for ALB
   ingress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    description = "HTTP inbound traffic"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "HTTPS inbound traffic"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  // Allow all outbound traffic (common for services that need to make external calls)
   egress {
+    description = "Allow all outbound traffic"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -74,4 +98,39 @@ resource "aws_security_group" "ecs_tasks" {
   }
 }
 
-// No outputs here, all moved to outputs.tf
+// Security Group for ALB
+resource "aws_security_group" "alb" {
+  name        = "${var.project_name}-alb-sg"
+  description = "Security group for the Application Load Balancer"
+  vpc_id      = aws_vpc.main.id
+
+  // Allow incoming HTTP and HTTPS traffic from anywhere
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "HTTP from anywhere"
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "HTTPS from anywhere"
+  }
+
+  // Allow all outbound traffic
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "All outbound traffic"
+  }
+
+  tags = {
+    Name = "${var.project_name}-alb-sg"
+  }
+}

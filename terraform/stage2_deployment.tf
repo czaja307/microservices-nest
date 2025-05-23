@@ -65,8 +65,14 @@ resource "aws_lb" "main" {
   name               = "${var.project_name}-alb"
   internal           = false
   load_balancer_type = "application"
-  security_groups    = [aws_security_group.ecs_tasks.id]
+  security_groups    = [aws_security_group.alb.id]
   subnets            = aws_subnet.public[*].id
+  
+  enable_deletion_protection = false
+  
+  tags = {
+    Name = "${var.project_name}-alb"
+  }
 }
 
 // Create ALB Target Groups for each service
@@ -80,12 +86,12 @@ resource "aws_lb_target_group" "services" {
   target_type = "ip"
   
   health_check {
-    path                = "/"
-    interval            = 60
-    timeout             = 30
-    healthy_threshold   = 3
+    path                = "/health"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
     unhealthy_threshold = 3
-    matcher             = "200-499"
+    matcher             = "200-299"
   }
 }
 
@@ -114,7 +120,7 @@ resource "aws_lb_listener_rule" "services" {
   
   condition {
     path_pattern {
-      values = ["/${each.key}/*"]
+      values = ["/${replace(each.key, "-service", "")}*"]
     }
   }
 }

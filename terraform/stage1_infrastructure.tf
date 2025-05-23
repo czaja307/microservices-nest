@@ -11,7 +11,6 @@ resource "aws_db_subnet_group" "postgres" {
   name       = "${var.project_name}-db-subnet-group"
   subnet_ids = aws_subnet.public[*].id
   
-  # Ensure subnets are created before the DB subnet group
   depends_on = [aws_subnet.public]
   
   tags = {
@@ -45,7 +44,7 @@ resource "aws_security_group" "rds" {
 resource "aws_db_instance" "postgres" {
   identifier             = "${var.project_name}-postgres"
   engine                 = "postgres"
-  engine_version         = "13"  // Using major version only, AWS will select latest minor version
+  engine_version         = "13"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
   storage_type           = "gp2"
@@ -81,5 +80,3 @@ resource "aws_ecr_repository" "services" {
     scan_on_push = true
   }
 }
-
-// No outputs here, all moved to outputs.tf
