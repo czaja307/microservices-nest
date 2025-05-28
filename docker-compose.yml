@@ -2,34 +2,34 @@ services:
   order-service:
     image: czaja307/order-service:latest
     ports:
-      - "3000"
+      - "3000-3099:3000"
     deploy:
       replicas: 2
 
   payment-service:
     image: czaja307/payment-service:latest
     ports:
-      - "3000"
+      - "3100-3199:3000"
     deploy:
       replicas: 1
 
   meal-service:
     image: czaja307/meal-service:latest
     ports:
-      - "3000"
+      - "3200-3299:3000"
     deploy:
       replicas: 3
 
   delivery-service:
     image: czaja307/delivery-service:latest
     ports:
-      - "3000"
+      - "3300-3399:3000"
     deploy:
       replicas: 1
 
   review-service:
     image: czaja307/review-service:latest
     ports:
-      - "3000"
+      - "3400-3499:3000"
     deploy:
       replicas: 2
